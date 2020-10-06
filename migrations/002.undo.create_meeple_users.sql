@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS meeple_users;
+DROP TABLE IF EXISTS users;

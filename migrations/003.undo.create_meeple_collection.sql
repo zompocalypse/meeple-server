@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS meeple_collection;
+DROP TABLE IF EXISTS collections;

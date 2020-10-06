@@ -1,3 +1,3 @@
-DROP TABLE IF EXISTS meeple_boardgames;
+DROP TABLE IF EXISTS boardgames;
 
 DROP TYPE IF EXISTS game_type;
