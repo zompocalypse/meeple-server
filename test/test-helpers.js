@@ -66,7 +66,7 @@ function makeUsersArray() {
   ]
 }
 
-function makeCollectionArray(users, games) {
+function makeCollectionsArray(users, games) {
   return [
     {
       id: 1,
@@ -114,16 +114,16 @@ function makeCollectionArray(users, games) {
 function makeMeepleFixtures() {
   const testUsers = makeUsersArray();
   const testGames = makeBoardGamesArray();
-  const testCollection = makeCollectionArray(testUsers, testGames);
-  return { testUsers, testGames, testCollection };
+  const testCollections = makeCollectionsArray(testUsers, testGames);
+  return { testUsers, testGames, testCollections };
 }
 
 function cleanTables(db) {
   return db.raw(
     `TRUNCATE
-      meeple_collection,
-      meeple_boardgames,
-      meeple_users
+      collections,
+      boardgames,
+      users
       RESTART IDENTITY CASCADE`
   );
 }
@@ -133,10 +133,10 @@ function seedUsers(db, users) {
     ...user,
     password: bcrypt.hashSync(user.password, 1)
   }))
-  return db.into('meeple_users').insert(preppedUsers)
+  return db.into('users').insert(preppedUsers)
     .then(() =>
       db.raw(
-        `SELECT setval('meeple_users_id_seq', ?)`,
+        `SELECT setval('users_id_seq', ?)`,
         [users[users.length - 1].id],
       )
     )
@@ -153,7 +153,7 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
 module.exports = {
   makeBoardGamesArray,
   makeUsersArray,
-  makeCollectionArray,
+  makeCollectionsArray,
   makeMeepleFixtures,
   seedUsers,
   makeAuthHeader,

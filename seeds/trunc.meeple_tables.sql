@@ -1,5 +1,5 @@
 TRUNCATE
-  meeple_collection,
-  meeple_boardgames,
-  meeple_users
+  collections,
+  boardgames,
+  users
   RESTART IDENTITY CASCADE;
