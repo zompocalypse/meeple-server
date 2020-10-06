@@ -6,6 +6,8 @@ const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
 const errorHandler = require('./errorHandler')
 const boardGamesRouter = require('./boardgames/boardgames-router')
+const authRouter = require('./auth/auth-router')
+const usersRouter = require('./users/users-router')
 
 const app = express()
 
@@ -18,6 +20,8 @@ app.use(morgan(morganOption))
 app.use(helmet())
 
 app.use('/api/boardgames', boardGamesRouter)
+app.use('/api/auth', authRouter)
+app.use('/api/users', usersRouter)
 
 app.use(function errorHandler(error, req, res, next) {
   let response

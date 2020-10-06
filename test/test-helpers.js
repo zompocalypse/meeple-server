@@ -1,3 +1,6 @@
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+
 function makeBoardGamesArray() {
   return [
     {
@@ -6,8 +9,9 @@ function makeBoardGamesArray() {
       title: 'First Game',
       tagline: 'First tagline',
       description: 'This is a description of the first game',
-      bg_type: 'Strategy',
-      num_players: '2-4',
+      type: 'Strategy',
+      minimum_players: '2',
+      maximum_players: '4',
       date_created: "2029-01-22T16:28:32.615Z",
     },
     {
@@ -17,7 +21,8 @@ function makeBoardGamesArray() {
       tagline: 'Second tagline',
       description: 'This is a description of the second game',
       bg_type: 'Family',
-      num_players: '2-5',
+      minimum_players: '2',
+      maximum_players: '5',
       date_created: "2029-01-23T17:28:32.615Z",
     },
     {
@@ -27,7 +32,8 @@ function makeBoardGamesArray() {
       tagline: 'Third tagline',
       description: 'This is a description of the third game',
       bg_type: 'Party',
-      num_players: '2-8',
+      minimum_players: '2',
+      maximum_players: '8',
       date_created: "2029-01-24T18:28:32.615Z",
     }
   ]
@@ -37,29 +43,33 @@ function makeUsersArray() {
   return [
     {
       id: 1,
-      user_name: "test-user-1",
-      full_name: "Test user 1",
+      email: "test-user-1@gmail.com",
+      first_name: "First1",
+      last_name: "Last1",
       password: "password",
       date_created: "2029-01-22T16:28:32.615Z",
     },
     {
       id: 2,
-      user_name: "test-user-2",
-      full_name: "Test user 2",
+      email: "test-user-2@gmail.com",
+      first_name: "First2",
+      last_name: "Last2",
       password: "password",
       date_created: "2029-01-22T16:28:32.615Z",
     },
     {
       id: 3,
-      user_name: "test-user-3",
-      full_name: "Test user 3",
+      email: "test-user-3@gmail.com",
+      first_name: "First3",
+      last_name: "Last3",
       password: "password",
       date_created: "2029-01-22T16:28:32.615Z",
     },
     {
       id: 4,
-      user_name: "test-user-4",
-      full_name: "Test user 4",
+      email: "test-user-4@gmail.com",
+      first_name: "First4",
+      last_name: "Last4",
       password: "password",
       date_created: "2029-01-22T16:28:32.615Z",
     },
@@ -144,7 +154,7 @@ function seedUsers(db, users) {
 
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
   const token = jwt.sign({ user_id: user.id }, secret, {
-    subject: user.user_name,
+    subject: user.email,
     algorithm: 'HS256',
   })
   return `Bearer ${token}`;
