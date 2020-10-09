@@ -6,25 +6,28 @@ TRUNCATE
   users
   RESTART IDENTITY CASCADE;
 
-INSERT INTO users (email, first_name, last_name, password)
+INSERT INTO users (email, first_name, last_name, password, collection_path)
 VALUES
   (
     'jason.stankevich@gmail.com',
     'Jason',
     'Stankevich',
-    '$2a$12$Ab0ZctIwib97q8ECbNo/tuUYlfTZrSbfiwQ35Opv2tZxlYwRndJU.'
+    '$2a$12$Ab0ZctIwib97q8ECbNo/tuUYlfTZrSbfiwQ35Opv2tZxlYwRndJU.',
+    'stank'
   ),
   (
     'boba.fett@gmail.com',
     'Boba',
     'Fett',
-    '$2a$12$pIZBiogUsUnQBri.dIMjlunig2yS6.kc7iV6rmRDmsCngjycXjlfq'
+    '$2a$12$pIZBiogUsUnQBri.dIMjlunig2yS6.kc7iV6rmRDmsCngjycXjlfq',
+    'bobafett'
   ),
   (
     'chewie@gmail.com',
     'Chew',
     'Bacca',
-    '$2a$12$xFcMxf8rzFguOeAGfp20DefgBjSab9PPE6P/WndlcWsO.RF.LN/Ny'
+    '$2a$12$xFcMxf8rzFguOeAGfp20DefgBjSab9PPE6P/WndlcWsO.RF.LN/Ny',
+    'chewie'
   )
 ;
 
@@ -96,49 +99,56 @@ VALUES
   )
 ;
 
-INSERT INTO collections (user_id, boardgame_id, rating, play_count)
+INSERT INTO collections (user_id, boardgame_id, rating, play_count, owner_status)
 VALUES
   (
     '1',
     '1',
     '8',
-    '15'
+    '15',
+    'Own'
   ),
   (
     '2',
     '1',
     '6',
-    '5'
+    '5',
+    'Own'
   ),
   (
     '3',
     '1',
     '3',
-    '2'
+    '2',
+    'Want'
   ),
   (
     '1',
     '4',
     '9',
-    '7'
+    '7',
+    'Own'
   ),
   (
     '3',
     '8',
     '7',
-    '9'
+    '9',
+    'Sell'
   ),
   (
     '1',
     '6',
     '4',
-    '11'
+    '11',
+    'Own'
   ),
   (
     '1',
     '3',
     '9',
-    '25'
+    '25',
+    'Want'
   )
 ;
 

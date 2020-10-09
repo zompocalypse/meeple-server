@@ -4,6 +4,7 @@ CREATE TABLE users (
   first_name VARCHAR(50),
   last_name VARCHAR(50),
   password VARCHAR(72) NOT NULL,
+  collection_path VARCHAR(16) NOT NULL UNIQUE,
   date_created TIMESTAMPTZ NOT NULL DEFAULT now(),
   date_modified TIMESTAMPTZ
 );

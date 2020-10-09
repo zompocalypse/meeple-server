@@ -4,8 +4,8 @@ const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
-const errorHandler = require('./errorHandler')
 const boardGamesRouter = require('./boardgames/boardgames-router')
+const collectionsRouter = require('./collections/collections-router')
 const authRouter = require('./auth/auth-router')
 const usersRouter = require('./users/users-router')
 
@@ -20,6 +20,7 @@ app.use(morgan(morganOption))
 app.use(helmet())
 
 app.use('/api/boardgames', boardGamesRouter)
+app.use('/api/collections', collectionsRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/users', usersRouter)
 
@@ -34,4 +35,4 @@ app.use(function errorHandler(error, req, res, next) {
   res.status(500).json(response)
 })
 
-module.exports = app;
+module.exports = app

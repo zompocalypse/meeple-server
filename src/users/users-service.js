@@ -10,6 +10,12 @@ const UsersService = {
       .first()
       .then(user => !!user)
   },
+  hasUserWithCollectionPath(db, collection_path) {
+    return db('users')
+      .where({ collection_path })
+      .first()
+      .then(user => !!user)
+  },
   insertUser(db, newUser) {
     return db
       .insert(newUser)
@@ -41,6 +47,7 @@ const UsersService = {
       email: xss(user.email),
       first_name: xss(user.first_name),
       last_name: xss(user.last_name),
+      collection_path: xss(user.collection_path),
       date_created: new Date(user.date_created),
     }
   }
