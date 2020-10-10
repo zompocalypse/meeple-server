@@ -1,5 +1,5 @@
-const xss = require('xss')
-const Treeize = require('treeize')
+const xss = require('xss');
+const Treeize = require('treeize');
 
 const CollectionsService = {
   getAllCollections(db) {
@@ -20,16 +20,8 @@ const CollectionsService = {
         'c.owner_status',
         'u.collection_path'
       )
-      .join(
-        'boardgames AS bg',
-        'c.boardgame_id',
-        'bg.id',
-      )
-      .join(
-        'users AS u',
-        'c.user_id',
-        'u.id'
-      )
+      .join('boardgames AS bg', 'c.boardgame_id', 'bg.id')
+      .join('users AS u', 'c.user_id', 'u.id');
   },
   getByCollectionId(db, collectionId) {
     return db
@@ -49,29 +41,22 @@ const CollectionsService = {
         'c.owner_status',
         'u.collection_path'
       )
-      .join(
-        'boardgames AS bg',
-        'c.boardgame_id',
-        'bg.id',
-      )
-      .join(
-        'users AS u',
-        'c.user_id',
-        'u.id'
-      )
+      .join('boardgames AS bg', 'c.boardgame_id', 'bg.id')
+      .join('users AS u', 'c.user_id', 'u.id')
       .where('c.id', collectionId)
-      .first()
+      .first();
   },
   getByCollectionPath(db, path) {
-    return CollectionsService.getAllCollections(db)
-      .where('u.collection_path', path)
+    return CollectionsService.getAllCollections(db).where(
+      'u.collection_path',
+      path
+    );
   },
   getByGameId(db, path, gameId) {
-    return CollectionsService.getAllCollections(db)
-      .where({
-        'c.boardgame_id': gameId,
-        'u.collection_path': path,
-      })
+    return CollectionsService.getAllCollections(db).where({
+      'c.boardgame_id': gameId,
+      'u.collection_path': path,
+    });
   },
   addToCollection(db, newItem) {
     return db
@@ -79,27 +64,22 @@ const CollectionsService = {
       .into('collections')
       .returning('*')
       .then(([collection]) => collection)
-      .then(collection => 
-        CollectionsService.getByCollectionId(db, collection.id))
+      .then((collection) =>
+        CollectionsService.getByCollectionId(db, collection.id)
+      );
   },
   updateCollectionItem(db, id, newCollectionData) {
-    return db('collections')
-      .where({ id })
-      .update(newCollectionData)
+    return db('collections').where({ id }).update(newCollectionData);
   },
   deleteCollectionItem(db, id) {
-    return db('collections')
-      .where({ id })
-      .delete()
+    return db('collections').where({ id }).delete();
   },
   serializeCollections(collections) {
-    return collections.map(
-      this.serializeCollection
-    )
+    return collections.map(this.serializeCollection);
   },
   serializeCollection(collection) {
-    const collTree = new Treeize()
-    const collData = collTree.grow([ collection ]).getData()[0]
+    const collTree = new Treeize();
+    const collData = collTree.grow([collection]).getData()[0];
 
     return {
       id: collData.id,
@@ -114,8 +94,8 @@ const CollectionsService = {
       rating: Number(collData.rating),
       play_count: Number(collData.play_count),
       owner_status: xss(collData.owner_status),
-      date_created: collData.date_created
-    }
+      date_created: collData.date_created,
+    };
   },
   serializeSingleCollection(collection) {
     return {
@@ -125,8 +105,8 @@ const CollectionsService = {
       play_count: Number(collection.play_count),
       rating: Number(collection.rating),
       owner_status: xss(collection.owner_status),
-    }
-  }
-}
+    };
+  },
+};
 
-module.exports = CollectionsService
+module.exports = CollectionsService;

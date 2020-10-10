@@ -1,5 +1,5 @@
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 function makeBoardGamesArray() {
   return [
@@ -12,7 +12,7 @@ function makeBoardGamesArray() {
       type: 'Strategy',
       minimum_players: '2',
       maximum_players: '4',
-      date_created: "2029-01-22T16:28:32.615Z",
+      date_created: '2029-01-22T16:28:32.615Z',
     },
     {
       id: 2,
@@ -23,7 +23,7 @@ function makeBoardGamesArray() {
       bg_type: 'Family',
       minimum_players: '2',
       maximum_players: '5',
-      date_created: "2029-01-23T17:28:32.615Z",
+      date_created: '2029-01-23T17:28:32.615Z',
     },
     {
       id: 3,
@@ -34,50 +34,50 @@ function makeBoardGamesArray() {
       bg_type: 'Party',
       minimum_players: '2',
       maximum_players: '8',
-      date_created: "2029-01-24T18:28:32.615Z",
-    }
-  ]
+      date_created: '2029-01-24T18:28:32.615Z',
+    },
+  ];
 }
 
 function makeUsersArray() {
   return [
     {
       id: 1,
-      email: "test-user-1@gmail.com",
-      first_name: "First1",
-      last_name: "Last1",
-      password: "password",
-      collection_path: "cpath1",
-      date_created: "2029-01-22T16:28:32.615Z",
+      email: 'test-user-1@gmail.com',
+      first_name: 'First1',
+      last_name: 'Last1',
+      password: 'password',
+      collection_path: 'cpath1',
+      date_created: '2029-01-22T16:28:32.615Z',
     },
     {
       id: 2,
-      email: "test-user-2@gmail.com",
-      first_name: "First2",
-      last_name: "Last2",
-      password: "password",
-      collection_path: "cpath2",
-      date_created: "2029-01-22T16:28:32.615Z",
+      email: 'test-user-2@gmail.com',
+      first_name: 'First2',
+      last_name: 'Last2',
+      password: 'password',
+      collection_path: 'cpath2',
+      date_created: '2029-01-22T16:28:32.615Z',
     },
     {
       id: 3,
-      email: "test-user-3@gmail.com",
-      first_name: "First3",
-      last_name: "Last3",
-      password: "password",
-      collection_path: "cpath3",
-      date_created: "2029-01-22T16:28:32.615Z",
+      email: 'test-user-3@gmail.com',
+      first_name: 'First3',
+      last_name: 'Last3',
+      password: 'password',
+      collection_path: 'cpath3',
+      date_created: '2029-01-22T16:28:32.615Z',
     },
     {
       id: 4,
-      email: "test-user-4@gmail.com",
-      first_name: "First4",
-      last_name: "Last4",
-      password: "password",
-      collection_path: "cpath4",
-      date_created: "2029-01-22T16:28:32.615Z",
+      email: 'test-user-4@gmail.com',
+      first_name: 'First4',
+      last_name: 'Last4',
+      password: 'password',
+      collection_path: 'cpath4',
+      date_created: '2029-01-22T16:28:32.615Z',
     },
-  ]
+  ];
 }
 
 function makeCollectionsArray(users, games) {
@@ -122,7 +122,7 @@ function makeCollectionsArray(users, games) {
       num_plays: 1,
       date_created: '2029-01-22T16:28:32.615Z',
     },
-  ]
+  ];
 }
 
 function makeMeepleFixtures() {
@@ -143,24 +143,23 @@ function cleanTables(db) {
 }
 
 function seedUsers(db, users) {
-  const preppedUsers = users.map(user => ({
+  const preppedUsers = users.map((user) => ({
     ...user,
     password: bcrypt.hashSync(user.password, 1),
-  }))
-  return db.into('users').insert(preppedUsers)
+  }));
+  return db
+    .into('users')
+    .insert(preppedUsers)
     .then(() =>
-      db.raw(
-        `SELECT setval('users_id_seq', ?)`,
-        [users[users.length - 1].id],
-      )
-    )
+      db.raw(`SELECT setval('users_id_seq', ?)`, [users[users.length - 1].id])
+    );
 }
 
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
   const token = jwt.sign({ user_id: user.id }, secret, {
     subject: user.email,
     algorithm: 'HS256',
-  })
+  });
   return `Bearer ${token}`;
 }
 
@@ -171,5 +170,5 @@ module.exports = {
   makeMeepleFixtures,
   seedUsers,
   makeAuthHeader,
-  cleanTables
-}
+  cleanTables,
+};
