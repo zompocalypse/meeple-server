@@ -33,12 +33,15 @@ describe('Users Endpoints', function() {
         )
       )
 
-      const requiredFields = ['email', 'password']
+      const requiredFields = ['email', 'password', 'first_name', 'last_name', 'collection_path']
 
       requiredFields.forEach(field => {
         const registerAttemptBody = {
           email: 'testing@gmail.com',
           password: 'test password',
+          first_name: 'testFName',
+          last_name: 'testLName',
+          collection_path: 'cPath',
         }
 
         it(`responds with 400 required error when '${field}' is missing`, () => {
@@ -57,6 +60,9 @@ describe('Users Endpoints', function() {
         const userShortPassword = {
           email: 'testing@gmail.com',
           password: '1234567',
+          first_name: 'testFName',
+          last_name: 'testLName',
+          collection_path: 'cPath',
         }
         return supertest(app)
         .post('/api/users')
@@ -68,6 +74,9 @@ describe('Users Endpoints', function() {
         const userLongPassword = {
           email: 'testing@gmail.com',
           password: '*'.repeat(73),
+          first_name: 'testFName',
+          last_name: 'testLName',
+          collection_path: 'cPath',
         }
         return supertest(app)
           .post('/api/users')
@@ -79,6 +88,9 @@ describe('Users Endpoints', function() {
         const userPasswordStartsSpaces = {
           email: 'testing@gmail.com',
           password: ' 1Aa!2Bb@',
+          first_name: 'testFName',
+          last_name: 'testLName',
+          collection_path: 'cPath',
         }
         return supertest(app)
           .post('/api/users')
@@ -90,6 +102,9 @@ describe('Users Endpoints', function() {
         const userPasswordEndsSpaces = {
           email: 'testing@gmail.com',
           password: '1Aa!2Bb@ ',
+          first_name: 'testFName',
+          last_name: 'testLName',
+          collection_path: 'cPath',
         }
         return supertest(app)
           .post('/api/users')
@@ -101,6 +116,9 @@ describe('Users Endpoints', function() {
         const userPasswordNotComplex = {
           email: 'testing@gmail.com',
           password: '11AAaabb',
+          first_name: 'testFName',
+          last_name: 'testLName',
+          collection_path: 'cPath',
         }
         return supertest(app)
           .post('/api/users')
@@ -108,15 +126,18 @@ describe('Users Endpoints', function() {
           .expect(400, { error: `Password must contain 1 upper case, lower case, number and special character` })
       })
 
-      it(`responds 400 'User name already taken' when email isn't unique`, () => {
+      it(`responds 400 'Email address taken' when email isn't unique`, () => {
         const duplicateUser = {
           email: testUser.email,
           password: '11AAaa!!',
+          first_name: 'testFName',
+          last_name: 'testLName',
+          collection_path: 'cPath',
         }
         return supertest(app)
           .post('/api/users')
           .send(duplicateUser)
-          .expect(400, { error: 'User name already taken' })
+          .expect(400, { error: 'Email address already taken' })
       })
     })
 
@@ -125,6 +146,9 @@ describe('Users Endpoints', function() {
         const newUser = {
           email: 'testing@gmail.com',
           password: '11AAaa!!',
+          first_name: 'testFName',
+          last_name: 'testLName',
+          collection_path: 'cPath',
         }
         return supertest(app)
           .post('/api/users')
@@ -133,8 +157,9 @@ describe('Users Endpoints', function() {
           .expect(res => {
             expect(res.body).to.have.property('id')
             expect(res.body.email).to.eql(newUser.email)
-            expect(res.body.first_name).to.eql('')
-            expect(res.body.last_name).to.eql('')
+            expect(res.body.first_name).to.eql(newUser.first_name)
+            expect(res.body.last_name).to.eql(newUser.last_name)
+            expect(res.body.collection_path).to.eql(newUser.collection_path)
             expect(res.body).to.not.have.property('password')
             expect(res.headers.location).to.eql(`/api/users/${res.body.id}`)
             const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
@@ -149,8 +174,9 @@ describe('Users Endpoints', function() {
               .first()
               .then(row => {
                 expect(row.email).to.eql(newUser.email)
-                expect(row.first_name).to.eql(null)
-                expect(row.last_name).to.eql(null)
+                expect(row.first_name).to.eql(newUser.first_name)
+                expect(row.last_name).to.eql(newUser.last_name)
+                expect(row.collection_path).to.eql(newUser.collection_path)
                 const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
                 const actualDate = new Date(row.date_created).toLocaleString()
                 expect(actualDate).to.eql(expectedDate)

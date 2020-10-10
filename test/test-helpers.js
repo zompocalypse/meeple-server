@@ -47,6 +47,7 @@ function makeUsersArray() {
       first_name: "First1",
       last_name: "Last1",
       password: "password",
+      collection_path: "cpath1",
       date_created: "2029-01-22T16:28:32.615Z",
     },
     {
@@ -55,6 +56,7 @@ function makeUsersArray() {
       first_name: "First2",
       last_name: "Last2",
       password: "password",
+      collection_path: "cpath2",
       date_created: "2029-01-22T16:28:32.615Z",
     },
     {
@@ -63,6 +65,7 @@ function makeUsersArray() {
       first_name: "First3",
       last_name: "Last3",
       password: "password",
+      collection_path: "cpath3",
       date_created: "2029-01-22T16:28:32.615Z",
     },
     {
@@ -71,6 +74,7 @@ function makeUsersArray() {
       first_name: "First4",
       last_name: "Last4",
       password: "password",
+      collection_path: "cpath4",
       date_created: "2029-01-22T16:28:32.615Z",
     },
   ]
@@ -141,7 +145,7 @@ function cleanTables(db) {
 function seedUsers(db, users) {
   const preppedUsers = users.map(user => ({
     ...user,
-    password: bcrypt.hashSync(user.password, 1)
+    password: bcrypt.hashSync(user.password, 1),
   }))
   return db.into('users').insert(preppedUsers)
     .then(() =>

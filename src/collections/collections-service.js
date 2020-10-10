@@ -31,9 +31,36 @@ const CollectionsService = {
         'u.id'
       )
   },
-  getByCollectionId(db, id) {
-    CollectionsService.getAllCollections(db)
-      .where('c.id', id)
+  getByCollectionId(db, collectionId) {
+    return db
+      .from('collections AS c')
+      .select(
+        'c.id',
+        'c.user_id',
+        'c.boardgame_id',
+        'bg.title',
+        'bg.tagline',
+        'bg.description',
+        'bg.type',
+        'bg.minimum_players',
+        'bg.maximum_players',
+        'c.rating',
+        'c.play_count',
+        'c.owner_status',
+        'u.collection_path'
+      )
+      .join(
+        'boardgames AS bg',
+        'c.boardgame_id',
+        'bg.id',
+      )
+      .join(
+        'users AS u',
+        'c.user_id',
+        'u.id'
+      )
+      .where('c.id', collectionId)
+      .first()
   },
   getByCollectionPath(db, path) {
     return CollectionsService.getAllCollections(db)
@@ -46,7 +73,7 @@ const CollectionsService = {
         'u.collection_path': path,
       })
   },
-  insertIntoCollection(db, newItem) {
+  addToCollection(db, newItem) {
     return db
       .insert(newItem)
       .into('collections')
@@ -54,6 +81,16 @@ const CollectionsService = {
       .then(([collection]) => collection)
       .then(collection => 
         CollectionsService.getByCollectionId(db, collection.id))
+  },
+  updateCollectionItem(db, id, newCollectionData) {
+    return db('collections')
+      .where({ id })
+      .update(newCollectionData)
+  },
+  deleteCollectionItem(db, id) {
+    return db('collections')
+      .where({ id })
+      .delete()
   },
   serializeCollections(collections) {
     return collections.map(
@@ -80,7 +117,6 @@ const CollectionsService = {
       date_created: collData.date_created
     }
   },
-
   serializeSingleCollection(collection) {
     return {
       id: collection.id,
