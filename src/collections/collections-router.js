@@ -2,8 +2,6 @@ const express = require('express');
 const CollectionsService = require('./collections-service');
 const { requireAuth } = require('../middleware/jwt-auth');
 const path = require('path');
-const { response } = require('../app');
-const { serializeCollections } = require('./collections-service');
 
 const collectionsRouter = express.Router();
 const jsonBodyParser = express.json();
