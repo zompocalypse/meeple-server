@@ -8,8 +8,7 @@ const jsonBodyParser = express.json();
 
 boardGamesRouter
   .route('/')
-  .all(requireAuth)
-  .get((req, res, next) => {
+  .get(requireAuth, (req, res, next) => {
     const user_id = req.user.id;
     BoardGamesService.getAllAvailableGames(req.app.get('db'), user_id)
       .then((games) => {
@@ -17,7 +16,7 @@ boardGamesRouter
       })
       .catch(next);
   })
-  .post(jsonBodyParser, (req, res, next) => {
+  .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const {
       title,
       tagline,
@@ -41,8 +40,7 @@ boardGamesRouter
           error: `Missing '${key}' in request body`,
         });
 
-    BoardGamesService.all(requireAuth)
-      .insertBoardgame(req.app.get('db'), newGame)
+    BoardGamesService.insertBoardgame(req.app.get('db'), newGame, req.user.id)
       .then((game) => {
         res
           .status(201)

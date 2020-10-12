@@ -12,8 +12,8 @@ const BoardGamesService = {
       )
       .orderBy('bg.title');
   },
-  getGameById(db, id) {
-    return BoardGamesService.getAllAvailableGames(db)
+  getGameById(db, id, userId) {
+    return BoardGamesService.getAllAvailableGames(db, userId)
       .where('bg.id', id)
       .first();
   },
@@ -31,13 +31,15 @@ const BoardGamesService = {
       .where('c.boardgame_id', id)
       .first();
   },
-  insertBoardgame(db, newItem) {
+  insertBoardgame(db, newItem, userId) {
     return db
       .insert(newItem)
       .into('boardgames')
       .returning('*')
       .then(([boardgame]) => boardgame)
-      .then((boardgame) => BoardGamesService.getGameById(db, boardgame.id));
+      .then((boardgame) =>
+        BoardGamesService.getGameById(db, boardgame.id, userId)
+      );
   },
   serializeBoardGames(games) {
     return games.map(this.serializeBoardGame);

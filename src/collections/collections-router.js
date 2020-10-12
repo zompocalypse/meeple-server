@@ -8,15 +8,14 @@ const jsonBodyParser = express.json();
 
 collectionsRouter
   .route('/')
-  .all(requireAuth)
-  .get((req, res, next) => {
+  .get(requireAuth, (req, res, next) => {
     CollectionsService.getAllCollections(req.app.get('db'))
       .then((collections) => {
         res.json(CollectionsService.serializeCollections(collections));
       })
       .catch(next);
   })
-  .post(jsonBodyParser, (req, res, next) => {
+  .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const { boardgame_id } = req.body;
     const newItem = { boardgame_id };
 
@@ -45,8 +44,7 @@ collectionsRouter
 
 collectionsRouter
   .route('/:collection_path')
-  .all(requireAuth)
-  .get((req, res, next) => {
+  .get(requireAuth, (req, res, next) => {
     CollectionsService.getByCollectionPath(
       req.app.get('db'),
       req.params.collection_path
@@ -59,8 +57,7 @@ collectionsRouter
 
 collectionsRouter
   .route('/:collection_path/:collection_id')
-  .all(requireAuth)
-  .all((req, res, next) => {
+  .all(requireAuth, (req, res, next) => {
     CollectionsService.getByCollectionId(
       req.app.get('db'),
       req.params.collection_id
@@ -76,10 +73,10 @@ collectionsRouter
       })
       .catch(next);
   })
-  .get((req, res, next) => {
+  .get(requireAuth, (req, res, next) => {
     res.json(CollectionsService.serializeCollection(res.collection));
   })
-  .patch(jsonBodyParser, (req, res, next) => {
+  .patch(requireAuth, jsonBodyParser, (req, res, next) => {
     const { rating, owner_status, play_count } = req.body;
     const collectionToUpdate = { rating, owner_status, play_count };
 
@@ -102,7 +99,7 @@ collectionsRouter
       })
       .catch(next);
   })
-  .delete((req, res, next) => {
+  .delete(requireAuth, (req, res, next) => {
     CollectionsService.deleteCollectionItem(
       req.app.get('db'),
       req.params.collection_id
