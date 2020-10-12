@@ -8,7 +8,8 @@ const jsonBodyParser = express.json();
 
 boardGamesRouter
   .route('/')
-  .get(requireAuth, (req, res, next) => {
+  .all(requireAuth)
+  .get((req, res, next) => {
     const user_id = req.user.id;
     BoardGamesService.getAllAvailableGames(req.app.get('db'), user_id)
       .then((games) => {
@@ -16,7 +17,7 @@ boardGamesRouter
       })
       .catch(next);
   })
-  .post(requireAuth, jsonBodyParser, (req, res, next) => {
+  .post(jsonBodyParser, (req, res, next) => {
     const {
       title,
       tagline,
@@ -40,7 +41,8 @@ boardGamesRouter
           error: `Missing '${key}' in request body`,
         });
 
-    BoardGamesService.insertBoardgame(req.app.get('db'), newGame)
+    BoardGamesService.all(requireAuth)
+      .insertBoardgame(req.app.get('db'), newGame)
       .then((game) => {
         res
           .status(201)
@@ -50,20 +52,26 @@ boardGamesRouter
       .catch(next);
   });
 
-boardGamesRouter.route('/:boardgame_id').get((req, res, next) => {
-  BoardGamesService.getGameById(req.app.get('db'), req.params.boardgame_id)
-    .then((game) => {
-      res.json(BoardGamesService.serializeBoardGame(game));
-    })
-    .catch(next);
-});
+boardGamesRouter
+  .route('/:boardgame_id')
+  .all(requireAuth)
+  .get((req, res, next) => {
+    BoardGamesService.getGameById(req.app.get('db'), req.params.boardgame_id)
+      .then((game) => {
+        res.json(BoardGamesService.serializeBoardGame(game));
+      })
+      .catch(next);
+  });
 
-boardGamesRouter.route('/:id/rating').get((req, res, next) => {
-  BoardGamesService.getRatingByGameId(req.app.get('db'), req.params.id)
-    .then((rating) => {
-      return res.json(rating);
-    })
-    .catch(next);
-});
+boardGamesRouter
+  .route('/average/rating')
+  .all(requireAuth)
+  .get((req, res, next) => {
+    BoardGamesService.getRatingsForBoardGames(req.app.get('db'))
+      .then((rating) => {
+        return res.json(rating);
+      })
+      .catch(next);
+  });
 
 module.exports = boardGamesRouter;

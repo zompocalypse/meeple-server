@@ -13,9 +13,11 @@ const BoardGamesService = {
       .orderBy('bg.title');
   },
   getGameById(db, id) {
-    return BoardGamesService.getAllGames(db).where('bg.id', id).first();
+    return BoardGamesService.getAllAvailableGames(db)
+      .where('bg.id', id)
+      .first();
   },
-  getRatingForBoardGames(db) {
+  getRatingsForBoardGames(db) {
     return db
       .from('collections AS c')
       .select(
