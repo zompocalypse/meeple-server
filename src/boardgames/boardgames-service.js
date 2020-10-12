@@ -2,18 +2,15 @@ const xss = require('xss');
 const Treeize = require('treeize');
 
 const BoardGamesService = {
-  getAllGames(db) {
+  getAllAvailableGames(db, user_id) {
     return db
       .from('boardgames AS bg')
-      .select(
-        'bg.id',
-        'bg.title',
-        'bg.tagline',
-        'bg.description',
-        'bg.type',
-        'bg.minimum_players',
-        'bg.maximum_players'
-      );
+      .select('bg.id', 'bg.title')
+      .whereNotIn(
+        'id',
+        db.select('boardgame_id').from('collections').where('user_id', user_id)
+      )
+      .orderBy('bg.title');
   },
   getGameById(db, id) {
     return BoardGamesService.getAllGames(db).where('bg.id', id).first();
@@ -50,12 +47,6 @@ const BoardGamesService = {
     return {
       id: gameData.id,
       title: xss(gameData.title),
-      tagline: xss(gameData.tagline),
-      description: xss(gameData.description),
-      type: xss(gameData.type),
-      minimum_players: Number(gameData.minimum_players) || 0,
-      maximum_players: Number(gameData.maximum_players) || 0,
-      date_created: gameData.date_created,
     };
   },
 };

@@ -8,8 +8,9 @@ const jsonBodyParser = express.json();
 
 boardGamesRouter
   .route('/')
-  .get((req, res, next) => {
-    BoardGamesService.getAllGames(req.app.get('db'))
+  .get(requireAuth, (req, res, next) => {
+    const user_id = req.user.id;
+    BoardGamesService.getAllAvailableGames(req.app.get('db'), user_id)
       .then((games) => {
         res.json(BoardGamesService.serializeBoardGames(games));
       })

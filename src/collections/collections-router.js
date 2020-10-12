@@ -3,6 +3,7 @@ const CollectionsService = require('./collections-service');
 const { requireAuth } = require('../middleware/jwt-auth');
 const path = require('path');
 const { response } = require('../app');
+const { serializeCollections } = require('./collections-service');
 
 const collectionsRouter = express.Router();
 const jsonBodyParser = express.json();
@@ -30,7 +31,15 @@ collectionsRouter
 
     CollectionsService.addToCollection(req.app.get('db'), newItem)
       .then((collection) => {
-        res.status(201);
+        res
+          .status(201)
+          .location(
+            path.posix.join(
+              req.originalUrl,
+              '${collection.path}/${collection.id}'
+            )
+          )
+          .send(CollectionsService.serializeCollection(collection));
       })
       .catch(next);
   });

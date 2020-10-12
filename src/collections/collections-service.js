@@ -47,10 +47,9 @@ const CollectionsService = {
       .first();
   },
   getByCollectionPath(db, path) {
-    return CollectionsService.getAllCollections(db).where(
-      'u.collection_path',
-      path
-    );
+    return CollectionsService.getAllCollections(db)
+      .where('u.collection_path', path)
+      .orderBy('bg.title');
   },
   getByGameId(db, path, gameId) {
     return CollectionsService.getAllCollections(db).where({
