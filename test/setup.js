@@ -5,8 +5,8 @@ process.env.JWT_EXPIRY = '3m';
 
 require('dotenv').config();
 
-process.env.TEST_DB_URL =
-  process.env.TEST_DB_URL ||
+process.env.TEST_DATABASE_URL =
+  process.env.TEST_DATABASE_URL ||
   'postgresql://jason.stankevich@localhost/meeple-test';
 
 const { expect } = require('chai');
