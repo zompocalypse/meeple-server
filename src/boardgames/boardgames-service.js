@@ -24,6 +24,7 @@ const BoardGamesService = {
         db.raw('ROUND(AVG(c.rating), 1) AS "average_rating"'),
         'c.boardgame_id'
       )
+      .whereNot('c.rating', '0')
       .groupBy('c.boardgame_id');
   },
   getRatingByGameId(db, id) {
