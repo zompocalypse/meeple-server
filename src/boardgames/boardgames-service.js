@@ -12,10 +12,8 @@ const BoardGamesService = {
       )
       .orderBy('bg.title');
   },
-  getGameById(db, id, userId) {
-    return BoardGamesService.getAllAvailableGames(db, userId)
-      .where('bg.id', id)
-      .first();
+  getGameById(db, id) {
+    return db.from('boardgames AS bg').select('*').where('bg.id', id).first();
   },
   getRatingsForBoardGames(db) {
     return db
@@ -32,26 +30,36 @@ const BoardGamesService = {
       .where('c.boardgame_id', id)
       .first();
   },
-  insertBoardgame(db, newItem, userId) {
+  insertBoardgame(db, newItem) {
     return db
       .insert(newItem)
       .into('boardgames')
       .returning('*')
       .then(([boardgame]) => boardgame)
-      .then((boardgame) =>
-        BoardGamesService.getGameById(db, boardgame.id, userId)
-      );
+      .then((boardgame) => BoardGamesService.getGameById(db, boardgame.id));
   },
-  serializeBoardGames(games) {
-    return games.map(this.serializeBoardGame);
+  serializeAvailableBoardGames(games) {
+    return games.map(this.serializeAvailableBoardGame);
   },
-  serializeBoardGame(game) {
+  serializeAvailableBoardGame(game) {
     const gameTree = new Treeize();
     const gameData = gameTree.grow([game]).getData()[0];
 
     return {
       id: gameData.id,
       title: xss(gameData.title),
+    };
+  },
+  serializeBoardGame(game) {
+    return {
+      id: game.id,
+      title: xss(game.title),
+      tagline: xss(game.tagline),
+      description: xss(game.description),
+      type: xss(game.type),
+      minimum_players: Number(game.minimum_players),
+      maximum_players: Number(game.maximum_players),
+      date_created: game.date_created,
     };
   },
 };

@@ -72,7 +72,6 @@ describe('Auth Endpoints', function () {
         {
           user_id: testUser.id,
           collection_path: testUser.collection_path,
-          first_name: testUser.first_name,
         },
         process.env.JWT_SECRET,
         {

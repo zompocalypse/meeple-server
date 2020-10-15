@@ -7,7 +7,7 @@ require('dotenv').config();
 
 process.env.TEST_DATABASE_URL =
   process.env.TEST_DATABASE_URL ||
-  'postgresql://jason.stankevich@localhost/meeple-test';
+  'postgresql://meeple:meepmeep@localhost/meeple-test';
 
 const { expect } = require('chai');
 const supertest = require('supertest');

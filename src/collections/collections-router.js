@@ -34,7 +34,7 @@ collectionsRouter
           .location(
             path.posix.join(
               req.originalUrl,
-              '${collection.path}/${collection.id}'
+              `${req.user.collection_path}/${collection.id}`
             )
           )
           .send(CollectionsService.serializeCollection(collection));
@@ -65,7 +65,7 @@ collectionsRouter
       .then((collection) => {
         if (!collection) {
           return res.status(404).json({
-            error: { message: `Collection doesn't exist` },
+            error: `Collection doesn't exist`,
           });
         }
         res.collection = collection;

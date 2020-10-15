@@ -28,20 +28,12 @@ describe('Users Endpoints', function () {
     context(`User Validation`, () => {
       beforeEach('insert users', () => helpers.seedUsers(db, testUsers));
 
-      const requiredFields = [
-        'email',
-        'password',
-        'first_name',
-        'last_name',
-        'collection_path',
-      ];
+      const requiredFields = ['email', 'password', 'collection_path'];
 
       requiredFields.forEach((field) => {
         const registerAttemptBody = {
           email: 'testing@gmail.com',
           password: 'test password',
-          first_name: 'testFName',
-          last_name: 'testLName',
           collection_path: 'cPath',
         };
 
@@ -164,8 +156,6 @@ describe('Users Endpoints', function () {
           .expect((res) => {
             expect(res.body).to.have.property('id');
             expect(res.body.email).to.eql(newUser.email);
-            expect(res.body.first_name).to.eql(newUser.first_name);
-            expect(res.body.last_name).to.eql(newUser.last_name);
             expect(res.body.collection_path).to.eql(newUser.collection_path);
             expect(res.body).to.not.have.property('password');
             expect(res.headers.location).to.eql(`/api/users/${res.body.id}`);
@@ -183,8 +173,6 @@ describe('Users Endpoints', function () {
               .first()
               .then((row) => {
                 expect(row.email).to.eql(newUser.email);
-                expect(row.first_name).to.eql(newUser.first_name);
-                expect(row.last_name).to.eql(newUser.last_name);
                 expect(row.collection_path).to.eql(newUser.collection_path);
                 const expectedDate = new Date().toLocaleString('en', {
                   timeZone: 'UTC',

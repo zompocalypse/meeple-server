@@ -12,7 +12,7 @@ boardGamesRouter
     const user_id = req.user.id;
     BoardGamesService.getAllAvailableGames(req.app.get('db'), user_id)
       .then((games) => {
-        res.json(BoardGamesService.serializeBoardGames(games));
+        res.json(BoardGamesService.serializeAvailableBoardGames(games));
       })
       .catch(next);
   })
@@ -52,8 +52,8 @@ boardGamesRouter
 
 boardGamesRouter
   .route('/:boardgame_id')
-  .all(requireAuth)
-  .get((req, res, next) => {
+  .all(checkBoardGameExists)
+  .get(requireAuth, (req, res, next) => {
     BoardGamesService.getGameById(req.app.get('db'), req.params.boardgame_id)
       .then((game) => {
         res.json(BoardGamesService.serializeBoardGame(game));
@@ -71,5 +71,24 @@ boardGamesRouter
       })
       .catch(next);
   });
+
+async function checkBoardGameExists(req, res, next) {
+  try {
+    const game = await BoardGamesService.getGameById(
+      req.app.get('db'),
+      req.params.boardgame_id
+    );
+
+    if (!game)
+      return res.status(404).json({
+        error: `Boardgame doesn't exist`,
+      });
+
+    res.game = game;
+    next();
+  } catch (error) {
+    next(error);
+  }
+}
 
 module.exports = boardGamesRouter;
