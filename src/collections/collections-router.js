@@ -11,7 +11,7 @@ collectionsRouter
   .get(requireAuth, (req, res, next) => {
     CollectionsService.getAllCollections(req.app.get('db'))
       .then((collections) => {
-        res.json(CollectionsService.serializeCollections(collections));
+        return res.json(CollectionsService.serializeCollections(collections));
       })
       .catch(next);
   })
@@ -29,7 +29,7 @@ collectionsRouter
 
     CollectionsService.addToCollection(req.app.get('db'), newItem)
       .then((collection) => {
-        res
+        return res
           .status(201)
           .location(
             path.posix.join(
@@ -50,7 +50,7 @@ collectionsRouter
       req.params.collection_path
     )
       .then((collection) => {
-        res.json(CollectionsService.serializeCollections(collection));
+        return res.json(CollectionsService.serializeCollections(collection));
       })
       .catch(next);
   });
@@ -74,7 +74,7 @@ collectionsRouter
       .catch(next);
   })
   .get(requireAuth, (req, res, next) => {
-    res.json(CollectionsService.serializeCollection(res.collection));
+    return res.json(CollectionsService.serializeCollection(res.collection));
   })
   .patch(requireAuth, jsonBodyParser, (req, res, next) => {
     const { rating, owner_status, play_count } = req.body;
@@ -95,7 +95,7 @@ collectionsRouter
       collectionToUpdate
     )
       .then(() => {
-        res.status(204).end();
+        return res.status(204).end();
       })
       .catch(next);
   })
@@ -105,7 +105,7 @@ collectionsRouter
       req.params.collection_id
     )
       .then((numRowsAffected) => {
-        res.status(204).end();
+        return res.status(204).end();
       })
       .catch(next);
   });

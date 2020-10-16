@@ -12,7 +12,7 @@ boardGamesRouter
     const user_id = req.user.id;
     BoardGamesService.getAllAvailableGames(req.app.get('db'), user_id)
       .then((games) => {
-        res.json(BoardGamesService.serializeAvailableBoardGames(games));
+        return res.json(BoardGamesService.serializeAvailableBoardGames(games));
       })
       .catch(next);
   })
@@ -42,7 +42,7 @@ boardGamesRouter
 
     BoardGamesService.insertBoardgame(req.app.get('db'), newGame, req.user.id)
       .then((game) => {
-        res
+        return res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${game.id}`))
           .json(BoardGamesService.serializeBoardGame(game));
@@ -56,7 +56,7 @@ boardGamesRouter
   .get(requireAuth, (req, res, next) => {
     BoardGamesService.getGameById(req.app.get('db'), req.params.boardgame_id)
       .then((game) => {
-        res.json(BoardGamesService.serializeBoardGame(game));
+        return res.json(BoardGamesService.serializeBoardGame(game));
       })
       .catch(next);
   });
