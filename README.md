@@ -48,11 +48,11 @@ GET - retrieve specific collection item.  collection_path and collection_id pull
 PATCH - Update owner_status, rating, or play_count for the specified collection_id.  Requests must contain at least one of owner_status, rating, OR play_count.
 DELETE - Delete the specified collection_id.  collection_id retrieved from params.
 
-[![Home Page](https://imgur.com/1exia5c "Home Page")](https://imgur.com/1exia5c "Home Page")
-[![Login Page](https://imgur.com/Ng4U5e3 "Login Page")](https://imgur.com/Ng4U5e3 "Login Page")
-[![Collection Page](https://imgur.com/88O1xlW "Collection Page")](https://imgur.com/88O1xlW "Collection Page")
-[![Collection Item Detail Page](https://imgur.com/ak2EtDZ "Collection Item Detail Page")](https://imgur.com/ak2EtDZ "Collection Item Detail Page")
-[![Available Board Game Page](https://imgur.com/tquBfxa "Available Board Game Page")](https://imgur.com/tquBfxa "Available Board Game Page")
+![Home Page](https://imgur.com/1exia5c "Home Page")
+![Login Page](https://imgur.com/Ng4U5e3 "Login Page")
+![Collection Page](https://imgur.com/88O1xlW "Collection Page")
+![Collection Item Detail Page](https://imgur.com/ak2EtDZ "Collection Item Detail Page")
+![Available Board Game Page](https://imgur.com/tquBfxa "Available Board Game Page")
 
 ### Technology Used
 ###### Server
