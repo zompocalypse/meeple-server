@@ -1,26 +1,63 @@
-# Express Boilerplate!
+# Meeple
+##Board Game Collection Manager
 
-This is a boilerplate project used for starting new projects!
+Meeple is a board game collection manager app.  The app is designed to allow users to add board games to the application.  Theose globally availabel games can be added to their collection as well as other application users.  Once added to the collection, a user can rate and count the number of plays.  Users are also able to indicate ownership status of a particular board game with own, for sale, or want.
 
-## Set up
+### Live site
+https://meeple.vercel.com
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+### Server and Client Repos
+- Server - https://github.com/zompocalypse/meeple-server
+- Client - https://github.com/zompocalypse/meeple-client
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+### API Documentation
+#### Auth  - User authentication endpoint
+###### /api/auth/login
+POST - requests must contain email and password in the request body.
 
-## Scripts
+------------
+#### User - User registration endpoint
+###### /api/users
+POST - requests muct contain email, password, and collection path in the request body
 
-Start the application `npm start`
+------------
 
-Start nodemon for the application `npm run dev`
+#### Boardgames - Boardgames endpoints
+###### /api/boardgames
+GET - retrieve all available games for authenticated user.  Requests must include user_id in request body
+POST - add new boardgame to application.  Requests must include title, tagline, description, type, minimum_players, and maximum_players in request body.
 
-Run the tests `npm test`
+###### /api/boardgames/:boardgame_id
+GET - retrieve single board game based on the id provided in params (boardgame_id).
 
-## Deploying
+###### /api/boardgames/average/rating
+GET - retrieve average ratings for all boardgames
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+------------
+
+#### Collections - Collections endpoints
+###### /api/collections
+GET - retieve all collections for all users
+POST - add new game to the authenticated user.  Request must include boardgame_id in request body.
+
+###### /api/collections/:collection_path
+GET - retrieve all games for a specific collection_path (user defined collection name).  collection_path pulled from params.
+
+###### /api/collections/:collection_path/:collection_id
+GET - retrieve specific collection item.  collection_path and collection_id pulled from params.
+PATCH - Update owner_status, rating, or play_count for the specified collection_id.  Requests must contain at least one of owner_status, rating, OR play_count.
+DELETE - Delete the specified collection_id.  collection_id retrieved from params.
+
+[![Home Page](https://imgur.com/1exia5c "Home Page")](https://imgur.com/1exia5c "Home Page")
+[![Login Page](https://imgur.com/Ng4U5e3 "Login Page")](https://imgur.com/Ng4U5e3 "Login Page")
+[![Collection Page](https://imgur.com/88O1xlW "Collection Page")](https://imgur.com/88O1xlW "Collection Page")
+[![Collection Item Detail Page](https://imgur.com/ak2EtDZ "Collection Item Detail Page")](https://imgur.com/ak2EtDZ "Collection Item Detail Page")
+[![Available Board Game Page](https://imgur.com/tquBfxa "Available Board Game Page")](https://imgur.com/tquBfxa "Available Board Game Page")
+
+### Technology Used
+###### Server
+- Express
+- PostgreSQL
+
+###### Client
+- REACT
