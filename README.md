@@ -1,7 +1,7 @@
 # Meeple
 ## Board Game Collection Manager
 
-Meeple is a board game collection manager app.  The app is designed to allow users to add board games to the application.  Theose globally availabel games can be added to their collection as well as other application users.  Once added to the collection, a user can rate and count the number of plays.  Users are also able to indicate ownership status of a particular board game with own, for sale, or want.
+Meeple is a board game collection manager app.  The app is designed to allow users to add board games to the application.  Those globally available games can be added to their collection as well as other application users.  Once added to the collection, a user can rate and count the number of plays.  Users are also able to indicate ownership status of a particular board game with own, for sale, or want.
 
 ### Live site
 https://meeple.vercel.com
